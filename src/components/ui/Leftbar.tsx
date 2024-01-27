@@ -11,17 +11,19 @@ import {
     SelectValue,
 } from "@radix-ui/react-select";
 import Image from 'next/image';
-import Dropdown from "../../../public/Expand_down.svg"
+import Dropdown from "../../../public/Expand_down.svg";
+import { Checkbox } from '@radix-ui/react-checkbox';
+import checkIcon from '../../../public/Done_round.svg';
 
 const Leftbar = () => {
 
     const [selected, setSelected] = React.useState("");
-
+    const [status, setStatus] = React.useState({ MemberOfUN: false, Independent: false });
 
     return (
         <div className='flex flex-col gap-6 h-full'>
 
-            <div className='flex mt-2 flex-col space-y-2'>
+            <div className='flex mt-2 flex-col space-y-4'>
                 <span className='text-[#6C727F] text-[13px]'>
                     Sort by
                 </span>
@@ -50,26 +52,66 @@ const Leftbar = () => {
                 <span className='text-[#6C727F] text-[13px]'>
                     Region
                 </span>
-                <div className='w-full flex flex-col gap-4'>
-                    <div className='flex space-x-10 ml-1'>
-                        <span className='text-[#6C727F] text-[16px] p-1'>
+                <div className='w-full flex flex-col gap-2'>
+                    <div className='flex space-x-6 ml-1'>
+                        <span className='text-[#6C727F] text-[16px] p-2 pl-3 pr-3'>
                             Americas
                         </span>
                         <span className='text-[#D2D5DA] rounded-xl p-2 pl-3 pr-3 bg-[#282B30]  text-[16px] '>
                             Antartica
                         </span>
                     </div>
-                    <div className='flex space-x-10 ml-1'>
-                        <span className='text-[#6C727F] text-[16px] '>
+                    <div className='flex space-x-6 ml-1'>
+                        <span className='text-[#6C727F] text-[16px] p-2 pl-3 pr-3'>
                             Africa
                         </span>
-                        <span className='text-[#6C727F] text-[16px] '>
+                        <span className='text-[#6C727F] text-[16px] p-2 pl-3 pr-3'>
                             Asia
                         </span>
-                        <span className='text-[#6C727F] text-[16px] '>
+                        <span className='text-[#6C727F] text-[16px] p-2 pl-3 pr-3'>
                             Europe
                         </span>
                     </div>
+                    <div className='flex space-x-6 ml-1'>
+                        <span className='text-[#6C727F] text-[16px] p-2 pl-3 pr-3'>
+                            Oceania
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div className='flex mt-2 flex-col space-y-3 w-full'>
+                <span className='text-[#6C727F] text-[13px]'>
+                    Status
+                </span>
+                <div className='flex flex-col gap-2 pl-1 pt-0 '>
+
+                    <input type="checkbox" name='Independent' onChange={(e) => {
+                        e.preventDefault();
+                        setStatus({ ...status, Independent: !status.Independent });
+                    }} id="check1" checked={status.Independent} className="hidden" />
+                    <label htmlFor="check1" className="flex items-center cursor-pointer">
+                        <div className={`w-6 h-6 rounded-lg  mr-2 ${status.Independent ? 'bg-[#4E80EE]' : 'border border-[#6C727F]'}`}>
+                            {
+                                (status.Independent ? <Image src={checkIcon} height={24} width={24} alt='' /> : "")
+                            }
+                        </div>
+                        <span className="select-none text-[#D2D5DA]">Independent </span>
+                    </label>
+
+                    <input type="checkbox" name='Independent' onChange={(e) => {
+                        e.preventDefault();
+                        setStatus({ ...status, MemberOfUN: !status.MemberOfUN });
+                    }} id="check2" checked={status.Independent} className="hidden" />
+                    <label htmlFor="check2" className="flex items-center cursor-pointer">
+                        <div className={`w-6 h-6 rounded-lg  mr-2 ${status.MemberOfUN ? 'bg-[#4E80EE]' : 'border border-[#6C727F]'}`}>
+                            {
+                                (status.MemberOfUN ? <Image src={checkIcon} height={24} width={24} alt='' /> : "")
+                            }
+                        </div>
+                        <span className="select-none text-[#D2D5DA]"> Member of UN </span>
+                    </label>
+
                 </div>
             </div>
         </div>
