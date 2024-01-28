@@ -15,3 +15,17 @@ body{
   align-items: center;
 }
 
+::-webkit-scrollbar {
+  width: 10px; /* width of the scrollbar */
+  cursor: pointer;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  cursor: pointer;
+  background-color: #6C727F; /* Change scrollbar handle color on hover */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #282B30; /* color of the scrollbar thumb */
+  border-radius: 8px; /* rounded corners of the scrollbar thumb */
+}

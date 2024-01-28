@@ -3,7 +3,9 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Image from "next/image";
 import img from "../../public/globe.jpg"
-import icon from "../../public/Logo.svg"
+import icon from "../../public/Logo.svg";
+import logo from "../../public/Logo.svg";
+
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,14 +22,19 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="flex flex-col h-screen justify-center w-[80%] bg-[#1B1D1F] overflow-auto">
+        <div className="flex flex-col h-screen justify-center items-center relative overflow-x-hidden w-[80%] bg-[#1B1D1F] ">
+          <div className='flex justify-center rounded-lg h-12 w-full top-12 z-10 absolute'>
+            <Image src={logo} className='h-[100px] w-[200px] rounded-xl' alt='' />
+          </div>
           <div className="w-full relative justify-center h-[25%] overflow-hidden">
             <Image className="h-full w-full object-cover absolute "
               src={img}
               alt="Image" />
           </div>
           <div className="flex justify-center w-full h-[75%]">
+
             {children}
+
           </div>
         </div>
       </body>

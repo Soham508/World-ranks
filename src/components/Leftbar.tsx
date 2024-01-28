@@ -11,9 +11,8 @@ import {
     SelectValue,
 } from "@radix-ui/react-select";
 import Image from 'next/image';
-import Dropdown from "../../../public/Expand_down.svg";
-import { Checkbox } from '@radix-ui/react-checkbox';
-import checkIcon from '../../../public/Done_round.svg';
+import DropIcon from "../../public/Expand_down.svg"
+import checkIcon from '../../public/Done_round.svg';
 
 const Leftbar = () => {
 
@@ -34,7 +33,7 @@ const Leftbar = () => {
                             <Image
                                 width={24}
                                 height={24}
-                                src={Dropdown}
+                                src={DropIcon}
                                 alt='' />
                         </SelectTrigger>
                         <SelectContent className="pt-2 cursor-pointer bg-[#1B1D1F]">

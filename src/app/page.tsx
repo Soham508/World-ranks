@@ -3,11 +3,14 @@
 import Image from "next/image";
 import { Input } from "@/components/ui/input";
 import search from "../../public/Search.svg"
-import Leftbar from "@/components/ui/Leftbar";
+import Leftbar from "@/components/Leftbar";
+import Rightbar from "@/components/Rightbar";
 
 
 export default function Home() {
+
   return (
+
     <div className="flex flex-col w-[90%] bottom-14 rounded-xl h-full relative bg-[#1B1D1F] border drop-shadow-lg border-[#282B30] overflow-auto">
       <div className="w-full h-[10%] flex flex-row items-center justify-between bg-[#1B1D1F] ">
         <div className="h-full w-[20%] flex items-center">
@@ -34,10 +37,11 @@ export default function Home() {
 
         </div>
 
-        <div className="h-full w-[75%] bg-[#1f2224]">
-
+        <div className="h-full w-[75%] bg-[#1B1D1F]">
+          <Rightbar />
         </div>
       </div>
     </div>
+
   );
 }
