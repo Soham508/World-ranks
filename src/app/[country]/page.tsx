@@ -20,7 +20,7 @@ const Page = ({ params }: { params: { country: string } }) => {
                 capital: data.capital,
                 subregion: data.subregion,
                 languages: Object.values(data.languages).join(', '),
-                currencies: Object.values(data.currencies)[0].name,
+                currencies: Object.values(data.currencies)[0],
                 continents: data.continents.join(', '),
                 borders: data.borders,
                 flags: data.flags,
@@ -49,7 +49,7 @@ const Page = ({ params }: { params: { country: string } }) => {
                     Population  <div className='h-7 w-[1px] ml-2  mr-2 bg-[#1B1D1F]' /> {country?.population}
                 </span>
                 <span className='text-[#D2D5DA] rounded-xl flex justify-center items-center p-[10px] pr-6 pl-6 bg-[#282B30]  text-[15px] '>
-                    Area{'(square km)'}  <div className='h-7 w-[1px] ml-2  mr-2 bg-[#1B1D1F]' /> 130,000
+                    Area{'(square km)'}  <div className='h-7 w-[1px] ml-2  mr-2 bg-[#1B1D1F]' /> {country?.area}
                 </span>
             </div>
             <div className='flex w-full flex-col'>
@@ -71,7 +71,7 @@ const Page = ({ params }: { params: { country: string } }) => {
                 <div className='w-full bg-[#282B30] h-[1px] ' />
                 <div className='flex flex-row justify-between pl-8 pr-8 p-6'>
                     <span className='text-[#6C727F] text-md'> Currencies</span>
-                    <span className='text-[#D2D5DA] text-md'> {country?.currencies} </span>
+                    <span className='text-[#D2D5DA] text-md'> {country?.currencies.name} </span>
                 </div>
                 <div className='w-full bg-[#282B30] h-[1px] ' />
                 <div className='flex flex-row justify-between pl-8 pr-8 p-6'>

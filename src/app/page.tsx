@@ -5,9 +5,26 @@ import { Input } from "@/components/ui/input";
 import search from "../../public/Search.svg"
 import Leftbar from "@/components/Leftbar";
 import Rightbar from "@/components/Rightbar";
+import { useState } from "react";
+
+export interface FiltersState {
+  sortBy: string;
+  status: {
+    memberOfUN: Boolean,
+    Independent: Boolean,
+  };
+}
 
 
 export default function Home() {
+
+  const [filters, setFilters] = useState<FiltersState>({
+    sortBy: '',
+    status: {
+      memberOfUN: false,
+      Independent: false,
+    },
+  });
 
   return (
 
@@ -33,12 +50,14 @@ export default function Home() {
 
         <div className="h-full w-[25%] flex justify-center bg-[#1B1D1F]">
 
-          <Leftbar />
+          <Leftbar filters={filters} setFilters={setFilters} />
 
         </div>
 
         <div className="h-full w-[75%] bg-[#1B1D1F]">
-          <Rightbar />
+
+          <Rightbar filters={filters} setFilters={setFilters} />
+
         </div>
       </div>
     </div>

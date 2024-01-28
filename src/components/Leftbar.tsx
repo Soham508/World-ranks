@@ -1,6 +1,6 @@
 "use client"
 
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import {
     Select,
     SelectContent,
@@ -13,8 +13,9 @@ import {
 import Image from 'next/image';
 import DropIcon from "../../public/Expand_down.svg"
 import checkIcon from '../../public/Done_round.svg';
+import { FiltersState } from '@/app/page';
 
-const Leftbar = () => {
+const Leftbar = ({ filters, setFilters }: { filters: FiltersState, setFilters: Dispatch<SetStateAction<FiltersState>> }) => {
 
     const [selected, setSelected] = React.useState("");
     const [status, setStatus] = React.useState({ MemberOfUN: false, Independent: false });
@@ -27,9 +28,9 @@ const Leftbar = () => {
                     Sort by
                 </span>
                 <div className=''>
-                    <Select onValueChange={(value) => { setSelected(value) }}>
+                    <Select onValueChange={(value) => { setFilters({ ...filters, sortBy: value }) }}>
                         <SelectTrigger className="w-[250px] flex justify-between border-2 p-2 rounded-xl focus:text-[#D2D5DA]  active:border-[#282B30] border-[#282B30] text-[#D2D5DA]">
-                            <SelectValue className="" placeholder="Population" > {selected}</SelectValue>
+                            <SelectValue className="" placeholder="Population" > {filters.sortBy}</SelectValue>
                             <Image
                                 width={24}
                                 height={24}
@@ -38,9 +39,8 @@ const Leftbar = () => {
                         </SelectTrigger>
                         <SelectContent className="pt-2 cursor-pointer bg-[#1B1D1F]">
                             <SelectGroup className='text-[#D2D5DA] flex flex-col gap-3 border p-2 rounded-xl border-[#282B30] w-[250px]'>
-                                <SelectItem value="Population"> Population </SelectItem>
-                                <SelectItem value="Area"> Area </SelectItem>
-                                <SelectItem value="Economy"> Economy </SelectItem>
+                                <SelectItem value="population"> Population </SelectItem>
+                                <SelectItem value="area"> Area </SelectItem>
                             </SelectGroup>
                         </SelectContent>
                     </Select>
@@ -87,6 +87,7 @@ const Leftbar = () => {
 
                     <input type="checkbox" name='Independent' onChange={(e) => {
                         e.preventDefault();
+                        setFilters({ ...filters, status: { ...filters.status, Independent: !filters.status.Independent } })
                         setStatus({ ...status, Independent: !status.Independent });
                     }} id="check1" checked={status.Independent} className="hidden" />
                     <label htmlFor="check1" className="flex items-center cursor-pointer">
@@ -95,11 +96,12 @@ const Leftbar = () => {
                                 (status.Independent ? <Image src={checkIcon} height={24} width={24} alt='' /> : "")
                             }
                         </div>
-                        <span className="select-none text-[#D2D5DA]">Independent </span>
+                        <span className="select-none text-[#D2D5DA]">Independent  </span>
                     </label>
 
                     <input type="checkbox" name='Independent' onChange={(e) => {
                         e.preventDefault();
+                        setFilters({ ...filters, status: { ...filters.status, memberOfUN: !filters.status.memberOfUN } })
                         setStatus({ ...status, MemberOfUN: !status.MemberOfUN });
                     }} id="check2" checked={status.Independent} className="hidden" />
                     <label htmlFor="check2" className="flex items-center cursor-pointer">

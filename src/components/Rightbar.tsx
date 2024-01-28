@@ -1,28 +1,67 @@
 "use client"
 
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
 import Image from 'next/image'
-import Countries from "../lib/countries.json"
+import Countries from "../lib/countries.json";
+import { FiltersState } from "../app/page"
 
-const Rightbar = () => {
+export type CountriesType = typeof Countries;
+export type CountryType = typeof Countries[0];
+
+const Rightbar = ({ filters, setFilters }: { filters: FiltersState, setFilters: Dispatch<SetStateAction<FiltersState>> }) => {
 
     const [data, setData] = useState(Countries);
 
-    const countries = [
-        { name: "USA", population: 328_200_000, area: 9_826_675, language: "English", capital: "Washington, D.C." },
-        { name: "China", population: 1_394_015_977, area: 9_596_961, language: "Mandarin", capital: "Beijing" },
-        { name: "India", population: 1_326_093_247, area: 3_287_263, language: "Hindi", capital: "New Delhi" },
-        { name: "Brazil", population: 211_049_527, area: 8_515_767, language: "Portuguese", capital: "Brasília" },
-        { name: "Russia", population: 146_793_744, area: 17_098_242, language: "Russian", capital: "Moscow" },
-        { name: "Japan", population: 125_584_838, area: 377_975, language: "Japanese", capital: "Tokyo" },
-        { name: "Germany", population: 83_783_942, area: 357_022, language: "German", capital: "Berlin" },
-        { name: "Mexico", population: 126_577_691, area: 1_964_375, language: "Spanish", capital: "Mexico City" },
-        { name: "France", population: 65_273_511, area: 551_695, language: "French", capital: "Paris" },
-        { name: "Canada", population: 37_694_085, area: 9_984_670, language: "English/French", capital: "Ottawa" },
-        { name: "Australia", population: 25_499_884, area: 7_692_024, language: "English", capital: "Canberra" }
-    ];
+    const sortData = (property: string) => {
+        const sortedData = [...data].sort((a: CountryType, b: CountryType) => {
+            if (property === 'area') {
+                return b.area - a.area;
+            } else if (property === 'population') {
+                return b.population - a.population;
+            } else {
+                // Handle other cases or return 0 for no change in sorting
+                return 0;
+            }
+        });
+
+        setData(sortedData);
+    };
+
+    const filterArray = (independent: Boolean, unMember: Boolean) => {
+        const filteredArray = data.filter(item => {
+            return item.independent === independent || item.unMember === unMember;
+        });
+        setData(filteredArray);
+    };
+
+
+    useEffect(() => {
+        let filteredData = Countries; // Initialize filtered data with the original data
+
+        // Apply filtering based on the filter status
+        if (filters.status.Independent || filters.status.memberOfUN) {
+            filteredData = data.filter(item => {
+                return item.independent === filters.status.Independent || item.unMember === filters.status.memberOfUN;
+            });
+        }
+
+        // Apply sorting based on the sortBy property
+        if (filters.sortBy) {
+            filteredData.sort((a, b) => {
+                if (filters.sortBy === 'area') {
+                    return b.area - a.area;
+                } else if (filters.sortBy === 'population') {
+                    return b.population - a.population;
+                }
+                return 0;
+            });
+        }
+
+        // Update the state with the filtered and sorted data
+        setData([...filteredData]);
+    }, [filters, data]);
 
     return (
         <div className='w-[95%] h-full flex bg-[#1B1D1F] flex-col pl-2'>
@@ -31,7 +70,7 @@ const Rightbar = () => {
                     Flag
                 </div>
                 <div className='col-span-2 text-[14px] flex items-center text-[#6C727F] pl-3  bg-[#1B1D1F]'>
-                    Name
+                    Name {filters.sortBy}
                 </div>
                 <div className='col-span-2 text-[14px] flex items-center text-[#6C727F] pl-3  bg-[#1B1D1F]'>
                     Population
@@ -49,26 +88,26 @@ const Rightbar = () => {
             <div className='w-full overflow-auto h-full bg-[#1B1D1F] '>
                 {
                     data.map((country) => (
-                        <Link href={`/${country.name.common}`} key={country.name.common}>
+                        <Link href={`/${country?.name.common}`} key={country?.name.common}>
                             <div className='w-full h-16 grid grid-cols-9' >
                                 <div className='col-span-1  flex items-center text-[#D2D5DA] pl-3 bg-[#1B1D1F]'>
                                     <Image className='flex rounded-lg'
-                                        src={country.flags.svg}
+                                        src={country?.flags.svg}
                                         width={60}
                                         height={54}
                                         alt="flag" />
                                 </div>
                                 <div className='col-span-2 text-[16px] flex items-center text-[#D2D5DA] pl-3  bg-[#1B1D1F]'>
-                                    {country.name.common}
+                                    {country?.name.common}
                                 </div>
                                 <div className='col-span-2 text-[16px] flex items-center text-[#D2D5DA] pl-3  bg-[#1B1D1F]'>
-                                    {country.population}
+                                    {country?.population}
                                 </div>
                                 <div className='col-span-2 text-[16px] flex items-center text-[#D2D5DA] pl-3  bg-[#1B1D1F]'>
-                                    {country.area}
+                                    {country?.area}
                                 </div>
                                 <div className='col-span-2 text-[16px] flex items-center text-[#D2D5DA] pl-3  bg-[#1B1D1F]'>
-                                    {country.region}
+                                    {country?.region}
                                 </div>
                             </div>
                         </Link>
