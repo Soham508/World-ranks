@@ -12,7 +12,7 @@ export type CountryType = typeof Countries[0];
 
 const Rightbar = ({ filters, setFilters }: { filters: FiltersState, setFilters: Dispatch<SetStateAction<FiltersState>> }) => {
 
-    const [data, setData] = useState(Countries);
+    const [data, setData] = useState<CountriesType>([]);
 
     const sortData = (property: string) => {
         const sortedData = [...data].sort((a: CountryType, b: CountryType) => {
@@ -37,19 +37,31 @@ const Rightbar = ({ filters, setFilters }: { filters: FiltersState, setFilters: 
     };
 
 
+
     useEffect(() => {
         let filteredData = Countries; // Initialize filtered data with the original data
 
         // Apply filtering based on the filter status
         if (filters.status.Independent || filters.status.memberOfUN) {
-            filteredData = data.filter(item => {
+            filteredData = filteredData?.filter(item => {
                 return item.independent === filters.status.Independent || item.unMember === filters.status.memberOfUN;
             });
         }
 
+        const filteredCountries = filteredData.filter(country => {
+            // If no region is selected, show all countries
+            let regions = filters.regions;
+            let region: any = country.region;
+            if (!Object.values(regions).includes(true)) {
+                return true;
+            }
+            // Filter countries based on selected regions
+            return regions[region];
+        });
+
         // Apply sorting based on the sortBy property
         if (filters.sortBy) {
-            filteredData.sort((a, b) => {
+            filteredCountries.sort((a, b) => {
                 if (filters.sortBy === 'area') {
                     return b.area - a.area;
                 } else if (filters.sortBy === 'population') {
@@ -60,7 +72,7 @@ const Rightbar = ({ filters, setFilters }: { filters: FiltersState, setFilters: 
         }
 
         // Update the state with the filtered and sorted data
-        setData([...filteredData]);
+        setData([...filteredCountries]);
     }, [filters, data]);
 
     return (
@@ -87,7 +99,7 @@ const Rightbar = ({ filters, setFilters }: { filters: FiltersState, setFilters: 
 
             <div className='w-full overflow-auto h-full bg-[#1B1D1F] '>
                 {
-                    data.map((country) => (
+                    data?.map((country) => (
                         <Link href={`/${country?.name.common}`} key={country?.name.common}>
                             <div className='w-full h-16 grid grid-cols-9' >
                                 <div className='col-span-1  flex items-center text-[#D2D5DA] pl-3 bg-[#1B1D1F]'>

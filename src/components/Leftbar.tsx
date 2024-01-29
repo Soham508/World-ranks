@@ -20,6 +20,16 @@ const Leftbar = ({ filters, setFilters }: { filters: FiltersState, setFilters: D
     const [selected, setSelected] = React.useState("");
     const [status, setStatus] = React.useState({ MemberOfUN: false, Independent: false });
 
+    const handleRegionChange = (region: keyof FiltersState['regions']) => {
+        setFilters({
+            ...filters,
+            regions: {
+                ...filters.regions,
+                [region]: !filters.regions[region],
+            },
+        });
+    };
+
     return (
         <div className='flex flex-col gap-6 h-full'>
 
@@ -52,29 +62,54 @@ const Leftbar = ({ filters, setFilters }: { filters: FiltersState, setFilters: D
                     Region
                 </span>
                 <div className='w-full flex flex-col gap-2'>
-                    <div className='flex space-x-6 ml-1'>
-                        <span className='text-[#6C727F] text-[16px] p-2 pl-3 pr-3'>
+                    <div className='flex gap-x-4'>
+
+                        <label onClick={
+                            (e) => {
+                                handleRegionChange('Americas')
+                            }
+                        } className={`text-[#6C727F] text-[16px] p-2 ${(filters.regions.Americas ? 'bg-[#282B30] rounded-xl' : '')} pl-3 pr-3 cursor-pointer`}>
                             Americas
-                        </span>
-                        <span className='text-[#D2D5DA] rounded-xl p-2 pl-3 pr-3 bg-[#282B30]  text-[16px] '>
-                            Antartica
-                        </span>
+                        </label>
+
+                        <label onClick={
+                            (e) => {
+                                handleRegionChange('Antarctic')
+                            }} className={`text-[#6C727F] text-[16px] p-2 ${(filters.regions.Antarctic ? 'bg-[#282B30] rounded-xl' : '')} pl-3 pr-3 cursor-pointer`}>
+                            Antarctic
+                        </label>
                     </div>
-                    <div className='flex space-x-6 ml-1'>
-                        <span className='text-[#6C727F] text-[16px] p-2 pl-3 pr-3'>
-                            Africa
-                        </span>
-                        <span className='text-[#6C727F] text-[16px] p-2 pl-3 pr-3'>
+                    <div className='flex gap-x-4'>
+
+                        <label onClick={
+                            (e) => {
+                                handleRegionChange('Asia')
+                            }} className={`text-[#6C727F] text-[16px] p-2 ${(filters.regions.Asia ? 'bg-[#282B30] rounded-xl' : '')} pl-3 pr-3 cursor-pointer`}>
                             Asia
-                        </span>
-                        <span className='text-[#6C727F] text-[16px] p-2 pl-3 pr-3'>
+                        </label>
+
+                        <label onClick={
+                            (e) => {
+                                handleRegionChange('Africa')
+                            }} className={`text-[#6C727F] text-[16px] p-2 ${(filters.regions.Africa ? 'bg-[#282B30] rounded-xl' : '')} pl-3 pr-3 cursor-pointer`}>
+                            Africa
+                        </label>
+
+                        <label onClick={
+                            (e) => {
+                                handleRegionChange('Europe')
+                            }} className={`text-[#6C727F] text-[16px] p-2 ${(filters.regions.Europe ? 'bg-[#282B30] rounded-xl' : '')} pl-3 pr-3 cursor-pointer`}>
                             Europe
-                        </span>
+                        </label>
                     </div>
-                    <div className='flex space-x-6 ml-1'>
-                        <span className='text-[#6C727F] text-[16px] p-2 pl-3 pr-3'>
+                    <div className='flex gap-x-4'>
+
+                        <label onClick={
+                            (e) => {
+                                handleRegionChange('Oceania')
+                            }} className={`text-[#6C727F] text-[16px] p-2 ${(filters.regions.Oceania ? 'bg-[#282B30] rounded-xl' : '')} pl-3 pr-3 cursor-pointer`}>
                             Oceania
-                        </span>
+                        </label>
                     </div>
                 </div>
             </div>

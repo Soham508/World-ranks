@@ -13,17 +13,34 @@ export interface FiltersState {
     memberOfUN: Boolean,
     Independent: Boolean,
   };
+  regions:
+  {
+    Asia: Boolean,
+    Europe: Boolean,
+    Africa: Boolean,
+    Americas: Boolean,
+    Oceania: Boolean,
+    Antarctic: Boolean
+  };
 }
 
 
 export default function Home() {
 
   const [filters, setFilters] = useState<FiltersState>({
-    sortBy: '',
+    sortBy: 'population',
     status: {
       memberOfUN: false,
       Independent: false,
     },
+    regions: {
+      Asia: false,
+      Europe: false,
+      Africa: false,
+      Americas: false,
+      Oceania: false,
+      Antarctic: false,
+    }
   });
 
   return (
