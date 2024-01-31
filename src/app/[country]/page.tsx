@@ -14,7 +14,7 @@ const Page = ({ params }: { params: { country: string } }) => {
 
     useEffect(() => {
         async function fetchCountry(param: string) {
-            const res = await axios.get(`http://localhost:3000/api/countries/${param}`);
+            const res = await axios.get(`https://world-ranks-two-lovat.vercel.app/api/countries/${param}`);
             const data = res.data.country;
             setBorders(res.data.border);
 
