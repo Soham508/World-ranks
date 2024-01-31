@@ -5,12 +5,12 @@ import axios from 'axios';
 import Link from 'next/link';
 import Image from 'next/image'
 import Countries from "../lib/countries.json";
-import { FiltersState } from "../app/page"
+import { FiltersState } from "../app/page";
 
 export type CountriesType = typeof Countries;
 export type CountryType = typeof Countries[0];
 
-const Rightbar = ({ filters, setFilters }: { filters: FiltersState, setFilters: Dispatch<SetStateAction<FiltersState>> }) => {
+const Rightbar = ({ filters, setFilters, searchQuery }: { filters: FiltersState, setFilters: Dispatch<SetStateAction<FiltersState>>, searchQuery: String }) => {
 
     const [data, setData] = useState<CountriesType>([]);
 
@@ -39,7 +39,7 @@ const Rightbar = ({ filters, setFilters }: { filters: FiltersState, setFilters: 
 
 
     useEffect(() => {
-        let filteredData = Countries; // Initialize filtered data with the original data
+        let filteredData = Countries; //setting a temporary variable for filtered output to set into state later
 
         // Apply filtering based on the filter status
         if (filters.status.Independent || filters.status.memberOfUN) {
@@ -48,8 +48,8 @@ const Rightbar = ({ filters, setFilters }: { filters: FiltersState, setFilters: 
             });
         }
 
-        const filteredCountries = filteredData.filter(country => {
-            // If no region is selected, show all countries
+        let filteredCountries = filteredData.filter(country => {
+            // To show all countries, If no region is selected 
             let regions = filters.regions;
             let region: any = country.region;
             if (!Object.values(regions).includes(true)) {
@@ -59,7 +59,7 @@ const Rightbar = ({ filters, setFilters }: { filters: FiltersState, setFilters: 
             return regions[region];
         });
 
-        // Apply sorting based on the sortBy property
+        // sorting based on the sortBy property
         if (filters.sortBy) {
             filteredCountries.sort((a, b) => {
                 if (filters.sortBy === 'area') {
@@ -71,18 +71,30 @@ const Rightbar = ({ filters, setFilters }: { filters: FiltersState, setFilters: 
             });
         }
 
+        let finalFiltered = filteredCountries.filter(country => {
+            const searchLowerCase = searchQuery.toLowerCase();
+            const countryNameLowerCase = country.name.common.toLowerCase();
+            const countryRegionLowerCase = country.region.toLowerCase();
+            const countrySubregionLowerCase = country.subregion?.toLowerCase();
+
+            return (
+                countryNameLowerCase.startsWith(searchLowerCase) || countryRegionLowerCase.startsWith(searchLowerCase) || countrySubregionLowerCase?.startsWith(searchLowerCase)
+            );
+        });
+
         // Update the state with the filtered and sorted data
-        setData([...filteredCountries]);
-    }, [filters, data]);
+        setData([...finalFiltered]);
+    }, [filters, data, searchQuery]);
+
 
     return (
-        <div className='w-[95%] h-full flex bg-[#1B1D1F] flex-col pl-2'>
-            <div className='w-full grid grid-cols-9 h-[60px] bg-[#1f2224]'>
-                <div className='col-span-1 text-[14px] flex items-center text-[#6C727F] pl-3  bg-[#1B1D1F]'>
+        <div className='w-[95%] max-lg:w-full h-full flex bg-[#1B1D1F] flex-col pl-2'>
+            <div className='w-full grid max-lg:grid-cols-7 grid-cols-9 h-[60px] bg-[#1f2224]'>
+                <div className='col-span-1 text-[14px] flex items-center text-[#6C727F] pl-3  bg-[#1B1D1F]'  >
                     Flag
                 </div>
                 <div className='col-span-2 text-[14px] flex items-center text-[#6C727F] pl-3  bg-[#1B1D1F]'>
-                    Name {filters.sortBy}
+                    Name
                 </div>
                 <div className='col-span-2 text-[14px] flex items-center text-[#6C727F] pl-3  bg-[#1B1D1F]'>
                     Population
@@ -90,7 +102,7 @@ const Rightbar = ({ filters, setFilters }: { filters: FiltersState, setFilters: 
                 <div className='col-span-2 text-[14px] flex items-center text-[#6C727F] pl-3  bg-[#1B1D1F]'>
                     Area{'(km square)'}
                 </div>
-                <div className='col-span-2 text-[14px] flex items-center text-[#6C727F] pl-3  bg-[#1B1D1F]'>
+                <div className='col-span-2 max-lg:hidden text-[14px] flex items-center text-[#6C727F] pl-3  bg-[#1B1D1F]'>
                     Region
                 </div>
             </div>
@@ -100,25 +112,25 @@ const Rightbar = ({ filters, setFilters }: { filters: FiltersState, setFilters: 
             <div className='w-full overflow-auto h-full bg-[#1B1D1F] '>
                 {
                     data?.map((country) => (
-                        <Link href={`/${country?.name.common}`} key={country?.name.common}>
-                            <div className='w-full h-16 grid grid-cols-9' >
-                                <div className='col-span-1  flex items-center text-[#D2D5DA] pl-3 bg-[#1B1D1F]'>
+                        <Link key={country?.name.common} href={`/${country?.name.common}`}>
+                            <div key={country.name.common} className='w-full h-16 grid max-lg:grid-cols-7 grid-cols-9 hover:bg-[#282B30]' >
+                                <div className='col-span-1  flex items-center text-[#D2D5DA] pl-3 '>
                                     <Image className='flex rounded-lg'
                                         src={country?.flags.svg}
                                         width={60}
                                         height={54}
                                         alt="flag" />
                                 </div>
-                                <div className='col-span-2 text-[16px] flex items-center text-[#D2D5DA] pl-3  bg-[#1B1D1F]'>
+                                <div className='col-span-2 text-[16px] flex items-center text-[#D2D5DA] pl-3 '>
                                     {country?.name.common}
                                 </div>
-                                <div className='col-span-2 text-[16px] flex items-center text-[#D2D5DA] pl-3  bg-[#1B1D1F]'>
+                                <div className='col-span-2 text-[16px] flex items-center text-[#D2D5DA] pl-3 '>
                                     {country?.population}
                                 </div>
-                                <div className='col-span-2 text-[16px] flex items-center text-[#D2D5DA] pl-3  bg-[#1B1D1F]'>
+                                <div className='col-span-2 text-[16px] flex items-center text-[#D2D5DA] pl-3 '>
                                     {country?.area}
                                 </div>
-                                <div className='col-span-2 text-[16px] flex items-center text-[#D2D5DA] pl-3  bg-[#1B1D1F]'>
+                                <div className='col-span-2 text-[16px] flex items-center text-[#D2D5DA] pl-3 max-lg:hidden'>
                                     {country?.region}
                                 </div>
                             </div>
@@ -126,7 +138,6 @@ const Rightbar = ({ filters, setFilters }: { filters: FiltersState, setFilters: 
                     ))
                 }
             </div>
-
 
         </div>
     )

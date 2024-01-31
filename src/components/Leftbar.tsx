@@ -31,15 +31,15 @@ const Leftbar = ({ filters, setFilters }: { filters: FiltersState, setFilters: D
     };
 
     return (
-        <div className='flex flex-col gap-6 h-full'>
+        <div className='flex flex-col gap-6 h-full max-lg:w-full  max-lg:mb-4'>
 
-            <div className='flex mt-2 flex-col space-y-4'>
+            <div className='flex mt-2 max-lg:w-full flex-col space-y-4'>
                 <span className='text-[#6C727F] text-[13px]'>
                     Sort by
                 </span>
                 <div className=''>
                     <Select onValueChange={(value) => { setFilters({ ...filters, sortBy: value }) }}>
-                        <SelectTrigger className="w-[250px] flex justify-between border-2 p-2 rounded-xl focus:text-[#D2D5DA]  active:border-[#282B30] border-[#282B30] text-[#D2D5DA]">
+                        <SelectTrigger className="w-[250px] max-lg:w-[400px] flex justify-between border-2 p-2 rounded-xl focus:text-[#D2D5DA]  active:border-[#282B30] border-[#282B30] text-[#D2D5DA]">
                             <SelectValue className="" placeholder="Population" > {filters.sortBy}</SelectValue>
                             <Image
                                 width={24}
@@ -62,7 +62,7 @@ const Leftbar = ({ filters, setFilters }: { filters: FiltersState, setFilters: D
                     Region
                 </span>
                 <div className='w-full flex flex-col gap-2'>
-                    <div className='flex gap-x-4'>
+                    <div className='flex gap-x-8 max-lg:w-full'>
 
                         <label onClick={
                             (e) => {
@@ -79,7 +79,7 @@ const Leftbar = ({ filters, setFilters }: { filters: FiltersState, setFilters: D
                             Antarctic
                         </label>
                     </div>
-                    <div className='flex gap-x-4'>
+                    <div className='flex gap-x-8 max-lg:w-full'>
 
                         <label onClick={
                             (e) => {
@@ -102,7 +102,7 @@ const Leftbar = ({ filters, setFilters }: { filters: FiltersState, setFilters: D
                             Europe
                         </label>
                     </div>
-                    <div className='flex gap-x-4'>
+                    <div className='flex gap-x-8 max-lg:w-full'>
 
                         <label onClick={
                             (e) => {
@@ -118,14 +118,14 @@ const Leftbar = ({ filters, setFilters }: { filters: FiltersState, setFilters: D
                 <span className='text-[#6C727F] text-[13px]'>
                     Status
                 </span>
-                <div className='flex flex-col gap-2 pl-1 pt-0 '>
+                <div className='flex flex-col w-full max-lg:justify-center gap-2 pl-1 pt-0 '>
 
                     <input type="checkbox" name='Independent' onChange={(e) => {
                         e.preventDefault();
                         setFilters({ ...filters, status: { ...filters.status, Independent: !filters.status.Independent } })
                         setStatus({ ...status, Independent: !status.Independent });
                     }} id="check1" checked={status.Independent} className="hidden" />
-                    <label htmlFor="check1" className="flex items-center cursor-pointer">
+                    <label htmlFor="check1" className="flex max-lg:w-full max-lg:ml-4 flex-row gap-3 items-center cursor-pointer">
                         <div className={`w-6 h-6 rounded-lg  mr-2 ${status.Independent ? 'bg-[#4E80EE]' : 'border border-[#6C727F]'}`}>
                             {
                                 (status.Independent ? <Image src={checkIcon} height={24} width={24} alt='' /> : "")
@@ -139,13 +139,13 @@ const Leftbar = ({ filters, setFilters }: { filters: FiltersState, setFilters: D
                         setFilters({ ...filters, status: { ...filters.status, memberOfUN: !filters.status.memberOfUN } })
                         setStatus({ ...status, MemberOfUN: !status.MemberOfUN });
                     }} id="check2" checked={status.Independent} className="hidden" />
-                    <label htmlFor="check2" className="flex items-center cursor-pointer">
+                    <label htmlFor="check2" className="flex max-lg:w-full max-lg:ml-4 flex-row gap-3 items-center cursor-pointer">
                         <div className={`w-6 h-6 rounded-lg  mr-2 ${status.MemberOfUN ? 'bg-[#4E80EE]' : 'border border-[#6C727F]'}`}>
                             {
                                 (status.MemberOfUN ? <Image src={checkIcon} height={24} width={24} alt='' /> : "")
                             }
                         </div>
-                        <span className="select-none text-[#D2D5DA]"> Member of UN </span>
+                        <span className="select-none whitespace-nowrap text-[#D2D5DA]"> Member of UN </span>
                     </label>
 
                 </div>

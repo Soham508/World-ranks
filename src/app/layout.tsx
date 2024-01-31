@@ -22,7 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="flex flex-col h-screen justify-center items-center relative overflow-x-hidden w-[80%] bg-[#1B1D1F] ">
+        <div className="flex flex-col h-screen justify-center items-center relative overflow-x-hidden w-[80%] max-xl:w-[100%] bg-[#1B1D1F] ">
           <div className='flex justify-center rounded-lg h-12 w-full top-12 z-10 absolute'>
             <Image src={logo} className='h-[100px] w-[200px] rounded-xl' alt='' />
           </div>
